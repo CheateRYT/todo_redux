@@ -1,51 +1,31 @@
 import { useState } from "react";
-import "./App.css";
-import TodoForm from "./components/TodoForm";
+import { useDispatch } from "react-redux";
+
+import { addTodo } from "./store/todoSlice";
+import NewTodoForm from "./components/NewTodoForm";
 import TodoList from "./components/TodoList";
 
-function App() {
-  const [todos, setTodos] = useState([]);
-  const [text, setText] = useState("");
+import "./App.css";
 
-  const addTodo = () => {
+function App() {
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
+
+  const handleAction = () => {
     if (text.trim().length) {
-      setTodos([
-        ...todos,
-        {
-          id: new Date().toISOString(),
-          text,
-          completed: false,
-        },
-      ]);
+      dispatch(addTodo({ text }));
       setText("");
     }
   };
-  const toggleTodoComplete = (todoId) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id != todoId) return todo;
-        return {
-          ...todo,
-          completed: !todo.completed,
-        };
-      })
-    );
-  };
-  const removeTodo = (todoId) => {
-    setTodos(todos.filter((todo) => todo.id !== todoId));
-  };
+
   return (
     <div className="App">
-      <TodoForm
-        text={text}
-        handleInputTodoText={setText}
-        handleButtonAddTodo={addTodo}
+      <NewTodoForm
+        value={text}
+        updateText={setText}
+        handleAction={handleAction}
       />
-      <TodoList
-        todos={todos}
-        toggleTodoComplete={toggleTodoComplete}
-        removeTodo={removeTodo}
-      />
+      <TodoList />
     </div>
   );
 }
