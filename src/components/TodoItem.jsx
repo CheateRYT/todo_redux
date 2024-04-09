@@ -1,10 +1,10 @@
 import React from "react";
 
-const TodoItem = ({ id, text, completed }) => {
+const TodoItem = ({ id, text, completed, toggleTodoComplete, removeTodo }) => {
   return (
     <li>
       <input
-        type="checked"
+        type="checkbox"
         checked={completed}
         onChange={() => {
           toggleTodoComplete(id);
@@ -17,7 +17,7 @@ const TodoItem = ({ id, text, completed }) => {
           removeTodo(id);
         }}
       >
-        &times
+        &#215;
       </span>
     </li>
   );
